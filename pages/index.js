@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { getSession } from "next-auth/react";
+const getAllPermitsByUserID = require("../prisma/Permit").getAllPermitsByUserID;
+
 import Head from "next/head";
 
 import PermitsList from "../components/PermitsList";
@@ -7,7 +10,20 @@ import Editor from "../components/Editor"
 
 import HomeStyles from "../styles/Home.module.css";
 
-const Home = () => {
+
+export const getServerSideProps = async ({ req, res }) => {
+  const session = await getSession({ req });
+  if (!session) {
+    res.statusCode = 403;
+    return { props: { permits: [] } };
+  }
+  const permits = await getAllPermitsByUserID(session?.user?.id);
+  return {
+    props: { permits },
+  };
+};
+
+const Home = ({permits}) => {
   const [showEditor, setShowEditor] = useState(true);
 
   return (
@@ -25,7 +41,7 @@ const Home = () => {
             {showEditor && <Editor />}
 
             {/* Permit list component */}
-            <PermitsList />
+            <PermitsList retrieved_permits={permits} />
           </div>
         </main>
       </div>

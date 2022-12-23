@@ -50,7 +50,7 @@ model VerificationToken {
 model Permit {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  title String
+  eventTime String
   location String
   liquor String
   venueName String
@@ -62,7 +62,7 @@ model Permit {
   companyType String
   address String
   reviewed Boolean
-  userId String @db.ObjectId
+  userId String? @db.ObjectId
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([id, userId])
 }

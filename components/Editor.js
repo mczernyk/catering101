@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useSession, signIn, signOut } from "next-auth/react";
 import { CheckCircleIcon } from "@heroicons/react/solid"
 import { usePermit, useDispatchPermit, usePermits, useDispatchPermits } from "../modules/AppContext"
 import RandomID from "../modules/RandomID";
@@ -6,6 +7,8 @@ import RandomID from "../modules/RandomID";
 
 // making editor for new catering permit applications
 const Editor = () => {
+  const { data: session, status } = useSession();
+
   // the current permit, imported from AppContext. used to edit or create new permit
   const currentPermit = usePermit();
   const setCurrentPermit = useDispatchPermit();
@@ -15,10 +18,10 @@ const Editor = () => {
   const setPermits = useDispatchPermits();
 
   // edit permit states
-  // event: { time, location, requirements, }
+  // event: { eventTime, location, requirements, }
   const [event, setEvent] = useState({
     name: '',
-    time: '',
+    eventTime: '',
     location: '',
     liquor: '',
     venueName:'',
@@ -51,9 +54,9 @@ const Editor = () => {
 
 
   // function to save permit to saved permits array
-  const savePermit = () => {
+  const savePermit = async () => {
     console.log('clicked')
-    if (event) {
+    if (event.name) {
 
       // check if permit already has an ID, if it does asign the current id to the permit object,
       // if not, assign a new random ID to the permit object
@@ -74,23 +77,48 @@ const Editor = () => {
 
           console.log('hit edit')
 
+          permit.id = permitID
+
+          let res = await fetch("/api/permit", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(permit),
+          });
+
+          // update note
+          const updatedPermit = await res.json();
+          console.log("Update successful", { updatedPermit });
           // edit in permits list
-          setPermits({ permit, type: "edit" });
+          setPermits({ permit: updatedPermit, type: "edit" });
+
+          // edit in permits list (old)
+          // setPermits({ permit, type: "edit" });
 
           console.log({ permit, permitAction, permitID, permits });
 
         } else {
 
+          // send create request with permit data
+          let res = await fetch("/api/permit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(permit),
+          });
+
+          const newPermit = await res.json();
+          console.log("Create successful", { newPermit });
+
+
           console.log('hit add')
 
           // add to permits list
-          setPermits({ permit, type: "add" });
+          setPermits({ permit: newPermit, type: "add" });
         }
 
         setIsSaved(true)
 
         // clear permit content
-        permit = {event: { name: '', time: '', location: '', liquor: '', venueName:'', email:'', phone: '', contactName: '', contactSSN: '', contactDOB: '', companyType: '', address: ''}};
+        permit = {event: { name: '', eventTime: '', location: '', liquor: '', venueName:'', email:'', phone: '', contactName: '', contactSSN: '', contactDOB: '', companyType: '', address: ''}};
 
         console.log('reset event', permit.event)
 
@@ -126,19 +154,20 @@ const Editor = () => {
   }, [currentPermit]);
 
   return (
-    <div className={"editor"}>
+    status === "authenticated" &&
+    (<div className={"editor"}>
       <div className={"wrapper"}>
         <div className="editing-area">
           <form className="form">
             <h1>Event Details: {
-              event.name && event.time && event.location && event.liquor
+              event.name && event.eventTime && event.location && event.liquor
               ? "Complete" : "Incomplete"}
             </h1>
             <label>
               Event Name
               <input
                 type="text"
-                name="name"
+                name="name" required
                 value={event.name}
                 onChange={handleEventChange}>
               </input>
@@ -147,8 +176,8 @@ const Editor = () => {
               Event Time
               <input
                 type="text"
-                name="time"
-                value={event.time}
+                name="eventTime" required
+                value={event.eventTime}
                 onChange={handleEventChange}>
               </input>
             </label>
@@ -156,7 +185,7 @@ const Editor = () => {
               Event Location
               <input
                 type="text"
-                name="location"
+                name="location" required
                 value={event.location}
                 onChange={handleEventChange}>
               </input>
@@ -165,7 +194,7 @@ const Editor = () => {
               Liquor Requirements
               <input
                 type="text"
-                name="liquor"
+                name="liquor" required
                 value={event.liquor}
                 onChange={handleEventChange}>
               </input>
@@ -177,7 +206,7 @@ const Editor = () => {
               Venue Name
               <input
                 type="text"
-                name="venueName"
+                name="venueName" required
                 value={event.venueName}
                 onChange={handleEventChange}>
               </input>
@@ -186,7 +215,7 @@ const Editor = () => {
               Venue Email
               <input
                 type="text"
-                name="email"
+                name="email" required
                 value={event.email}
                 onChange={handleEventChange}>
               </input>
@@ -195,7 +224,7 @@ const Editor = () => {
               Venue Phone
               <input
                 type="text"
-                name="phone"
+                name="phone" required
                 value={event.phone}
                 onChange={handleEventChange}>
               </input>
@@ -207,7 +236,7 @@ const Editor = () => {
               Contact Name
               <input
                 type="text"
-                name="contactName"
+                name="contactName" required
                 value={event.contactName}
                 onChange={handleEventChange}>
               </input>
@@ -216,7 +245,7 @@ const Editor = () => {
               Contact SSN
               <input
                 type="text"
-                name="contactSSN"
+                name="contactSSN" required
                 value={event.contactSSN}
                 onChange={handleEventChange}>
               </input>
@@ -225,7 +254,7 @@ const Editor = () => {
               Contact DOB
               <input
                 type="text"
-                name="contactDOB"
+                name="contactDOB" required
                 value={event.contactDOB}
                 onChange={handleEventChange}>
               </input>
@@ -234,7 +263,7 @@ const Editor = () => {
               Business Details
               <input
                 type="text"
-                name="companyType"
+                name="companyType" required
                 value={event.companyType}
                 onChange={handleEventChange}>
               </input>
@@ -243,7 +272,7 @@ const Editor = () => {
               Business Address
               <input
                 type="text"
-                name="address"
+                name="address" required
                 value={event.address}
                 onChange={handleEventChange}>
               </input>
@@ -261,7 +290,7 @@ const Editor = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </div>)
   );
 };
 

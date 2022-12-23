@@ -14,13 +14,17 @@ const permitsReducer = (state, action) => {
   // get the permit object and the type of action by destructuring
   const { permit, type } = action;
 
+   // if "replace"
+  // replace the entire array with new value
+  if (type === "replace") return permit;
+
   // if "add"
   // return an array of the previous state and the permit object
   if (type === "add") return [...state, permit];
 
   // if "remove"
   // remove the permit object in the previous state
-  // that matches the title of the current permit object
+  // that matches the id of the current permit object
   if (type === "remove") {
     const permitIndex = state.findIndex((x) => x.id === permit.id);
 
