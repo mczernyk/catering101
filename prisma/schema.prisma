@@ -10,7 +10,7 @@ generator client {
 }
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String
+  userId            String @db.ObjectId
   type              String
   provider          String
   providerAccountId String
@@ -27,7 +27,7 @@ model Account {
 model Session {
   id String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId String
+  userId String @db.ObjectId
   expires DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -39,6 +39,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  permits  Permit[]
 }
 model VerificationToken {
   identifier String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -48,4 +49,20 @@ model VerificationToken {
 }
 model Permit {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  title String
+  location String
+  liquor String
+  venueName String
+  email String
+  phone String
+  contactName String
+  contactSSN String
+  contactDOB String
+  companyType String
+  address String
+  reviewed Boolean
+  userId String @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([id, userId])
 }
