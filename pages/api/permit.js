@@ -1,4 +1,4 @@
-import { createPermit } from "../../prisma/Permit";
+import { createPermit, updatePermit, deletePermit } from "../../prisma/Permit";
 import { getSession } from "next-auth/react";
 
 export default async function handle(req, res) {
