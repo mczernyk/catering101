@@ -20,22 +20,14 @@ const Editor = () => {
     name: '',
     time: '',
     location: '',
-    liquor: ''
-  });
-
-  // venue: { name, email, phone, }
-  const [venue, setVenue] = useState({
+    liquor: '',
     venueName:'',
     email:'',
-    phone: ''
-  });
-
-  // business details: { contact name, contact SSN, contact DOB, company type, company address}
-  const [business, setBusiness] = useState({
+    phone: '',
     contactName: '',
     contactSSN: '',
     contactDOB: '',
-    type: '',
+    companyType: '',
     address: ''
   });
 
@@ -54,38 +46,14 @@ const Editor = () => {
       ...event,
       [evt.target.name]: value
     });
-
-
   };
 
-  const handleVenueChange = (evt) => {
-    // get input values
-    let value = evt.target.value
 
-    //set venue state for input values
-    setVenue({
-      ...venue,
-      [evt.target.name]: value
-    });
-  };
-
-  const handleBusinessChange = (evt) => {
-    // get input values
-    let value = evt.target.value
-
-    //set business state for input values
-    setBusiness({
-      ...business,
-      [evt.target.name]: value
-    });
-  };
 
   // function to save permit to saved permits array
   const savePermit = () => {
     console.log('clicked')
-    if (event.name && event.time && event.location && event.liquor
-      && venue.venueName && venue.email && venue.phone
-      && business.contactName && business.contactSSN && business.contactDOB && business.type && business.address){
+    if (event) {
 
       // check if permit already has an ID, if it does asign the current id to the permit object,
       // if not, assign a new random ID to the permit object
@@ -96,22 +64,25 @@ const Editor = () => {
       let permit = {
         id,
         event,
-        venue,
-        business,
         reviewed: false
       };
-      console.log('permit id', permit.id)
-      console.log('permit event', permit.event)
-      console.log('permit venue', permit.venue)
-      console.log('permit business', permit.business)
-      console.log('permit reviewed', permit.reviewed)
+
+      console.log('permit', permit)
 
       try {
         if (permitAction == "edit") {
+
+          console.log('hit edit')
+
           // edit in permits list
           setPermits({ permit, type: "edit" });
+
           console.log({ permit, permitAction, permitID, permits });
+
         } else {
+
+          console.log('hit add')
+
           // add to permits list
           setPermits({ permit, type: "add" });
         }
@@ -119,24 +90,14 @@ const Editor = () => {
         setIsSaved(true)
 
         // clear permit content
-        permit = { event: {name: '', time: '', location: '', liquor: ''}, venue: {venueName:'', email:'', phone: ''}, business: {contactName: '', contactSSN: '', contactDOB: '', type: '', address: ''} };
+        permit = {event: { name: '', time: '', location: '', liquor: '', venueName:'', email:'', phone: '', contactName: '', contactSSN: '', contactDOB: '', companyType: '', address: ''}};
 
         console.log('reset event', permit.event)
-        console.log('reset venue', permit.venue)
-        console.log('reset business', permit.business)
-
-
 
         // clear editor
         setEvent(permit.event);
-        setVenue(permit.venue);
-        setBusiness(permit.business);
 
         console.log('cleared event', event)
-        console.log('cleared venue', venue)
-        console.log('cleared business', business)
-
-
 
 
         // clear current permit state
@@ -149,18 +110,17 @@ const Editor = () => {
 
   // enable the button whenever the form content changes
   useEffect(() => {
-    if (event && venue && business) setIsSaved(false);
+    if (event.name) setIsSaved(false);
     else setIsSaved(true);
-  }, [event, venue, business]);
+  }, [event]);
 
   // update the editor content whenever the permit context changes
   // this acts like a listener whenever the user clicks on edit permit
   // since the edit permit funtion, sets
   useEffect(() => {
-    if (currentPermit.event && currentPermit.venue && currentPermit.business) {
+    if (currentPermit.event) {
       setEvent(currentPermit.event);
-      setVenue(currentPermit.venue);
-      setBusiness(currentPermit.business);
+      setPermitID(currentPermit.id)
       setPermitAction(currentPermit.action);
     }
   }, [currentPermit]);
@@ -211,15 +171,15 @@ const Editor = () => {
               </input>
             </label>
             <h1>Venue Details: {
-              venue.venueName && venue.email && venue.phone
+              event.venueName && event.email && event.phone
               ? "Complete" : "Incomplete"}</h1>
             <label>
               Venue Name
               <input
                 type="text"
                 name="venueName"
-                value={venue.venueName}
-                onChange={handleVenueChange}>
+                value={event.venueName}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
@@ -227,8 +187,8 @@ const Editor = () => {
               <input
                 type="text"
                 name="email"
-                value={venue.email}
-                onChange={handleVenueChange}>
+                value={event.email}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
@@ -236,20 +196,20 @@ const Editor = () => {
               <input
                 type="text"
                 name="phone"
-                value={venue.phone}
-                onChange={handleVenueChange}>
+                value={event.phone}
+                onChange={handleEventChange}>
               </input>
             </label>
             <h1>Business Details: {
-              business.contactName && business.contactSSN && business.contactDOB && business.type && business.address
+              event.contactName && event.contactSSN && event.contactDOB && event.companyType && event.address
               ? "Complete" : "Incomplete"}</h1>
             <label>
               Contact Name
               <input
                 type="text"
                 name="contactName"
-                value={business.contactName}
-                onChange={handleBusinessChange}>
+                value={event.contactName}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
@@ -257,8 +217,8 @@ const Editor = () => {
               <input
                 type="text"
                 name="contactSSN"
-                value={business.contactSSN}
-                onChange={handleBusinessChange}>
+                value={event.contactSSN}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
@@ -266,17 +226,17 @@ const Editor = () => {
               <input
                 type="text"
                 name="contactDOB"
-                value={business.contactDOB}
-                onChange={handleBusinessChange}>
+                value={event.contactDOB}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
               Business Details
               <input
                 type="text"
-                name="type"
-                value={business.type}
-                onChange={handleBusinessChange}>
+                name="companyType"
+                value={event.companyType}
+                onChange={handleEventChange}>
               </input>
             </label>
             <label>
@@ -284,15 +244,12 @@ const Editor = () => {
               <input
                 type="text"
                 name="address"
-                value={business.address}
-                onChange={handleBusinessChange}>
+                value={event.address}
+                onChange={handleEventChange}>
               </input>
             </label>
 
           </form>
-
-
-
 
         </div>
         <ul className={"options"}>

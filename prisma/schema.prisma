@@ -25,14 +25,14 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId       String
-  expires      DateTime
+  userId String
+  expires DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -45,4 +45,7 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
   @@unique([identifier, token])
+}
+model Permit {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 }

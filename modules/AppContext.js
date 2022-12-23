@@ -22,7 +22,9 @@ const permitsReducer = (state, action) => {
   // remove the permit object in the previous state
   // that matches the title of the current permit object
   if (type === "remove") {
-    const permitIndex = state.findIndex((x) => x.title === permit.title);
+    const permitIndex = state.findIndex((x) => x.id === permit.id);
+
+    console.log('delete', { state, permitIndex, permit });
 
     // if no match, return the previous state
     if (permitIndex < 0) return state;
@@ -37,7 +39,8 @@ const permitsReducer = (state, action) => {
 
   if (type === "edit") {
     let permitIndex = state.findIndex((x) => x.id === permit.id);
-    console.log({ state, permitIndex, permit });
+
+    console.log('edit', { state, permitIndex, permit });
 
     // if no match, return the previous state
     if (permitIndex < 0) return state;

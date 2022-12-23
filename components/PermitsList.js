@@ -15,6 +15,7 @@ const PermitsList = ({ showEditor }) => {
   const editPermit = (permit) => {
     permit.action = "edit";
     setCurrentPermit(permit);
+    console.log('current permit', currentPermit)
   };
 
   const deletePermit = (permit) => {
@@ -36,6 +37,8 @@ const PermitsList = ({ showEditor }) => {
                   <p className="">Name: {permit.event.name}</p>
                   <p className="">Time: {permit.event.time}</p>
                   <p className="">Location: {permit.event.location}</p>
+                  <p className="">Status: {permit.event.reviewed? 'approved' : 'under review'}</p>
+
                 </main>
                 <footer className="permit-footer">
                   <ul className="options">
@@ -45,12 +48,12 @@ const PermitsList = ({ showEditor }) => {
                         <span className="">Edit</span>
                       </button>
                     </li>
-                    <li className="option">
+                    {/*<li className="option">
                       <button className="cta cta-w-icon">
                         <ExternalLinkIcon className="icon" />
                         <span className="">Open</span>
                       </button>
-                    </li>
+                    </li>*/}
                     <li className="option">
                       <button onClick={() => deletePermit(permit)} className="cta cta-w-icon">
                         <TrashIcon className="icon" />
