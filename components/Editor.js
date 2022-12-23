@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react"
-import { useSession, signIn, signOut } from "next-auth/react";
+
+import { useSession } from "next-auth/react";
+
 import { CheckCircleIcon } from "@heroicons/react/solid"
+
 import { usePermit, useDispatchPermit, usePermits, useDispatchPermits } from "../modules/AppContext"
+
 import RandomID from "../modules/RandomID";
 
 
 // making editor for new catering permit applications
 const Editor = () => {
+
+  // useSession() returns an object containing two values: data and status
   const { data: session, status } = useSession();
 
   // the current permit, imported from AppContext. used to edit or create new permit
@@ -18,7 +24,6 @@ const Editor = () => {
   const setPermits = useDispatchPermits();
 
   // edit permit states
-  // event: { eventTime, location, requirements, }
   const [event, setEvent] = useState({
     name: '',
     eventTime: '',
@@ -37,6 +42,9 @@ const Editor = () => {
   const [permitID, setPermitID] = useState(null);
   const [permitAction, setPermitAction] = useState("add");
   const [isSaved, setIsSaved] = useState(false);
+
+   // user data
+   const [userID, setUserID] = useState(null);
 
   // functions to capture form data for each category; handles multiple fields for each
 
@@ -60,14 +68,18 @@ const Editor = () => {
 
       // check if permit already has an ID, if it does asign the current id to the permit object,
       // if not, assign a new random ID to the permit object
+      // OLD - replaced when connecting to Mongo/Prisma
+      // let id = permitID || RandomID(event.name.slice(0, 5), 5);
 
-      let id = permitID || RandomID(event.name.slice(0, 5), 5);
+      // set userId
+      setUserID(session.user.id);
 
       // the permit object
       let permit = {
-        id,
+        // id,
         event,
-        reviewed: false
+        reviewed: false,
+        userId: userID,
       };
 
       console.log('permit', permit)
@@ -77,26 +89,31 @@ const Editor = () => {
 
           console.log('hit edit')
 
+          // add permit id to permit data
           permit.id = permitID
 
+
+          // send request to edit permit
           let res = await fetch("/api/permit", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(permit),
           });
 
-          // update note
+          // update permit
           const updatedPermit = await res.json();
           console.log("Update successful", { updatedPermit });
+
           // edit in permits list
           setPermits({ permit: updatedPermit, type: "edit" });
 
-          // edit in permits list (old)
+          // OLD edit in permits list, replaced with Mongo/prisma
           // setPermits({ permit, type: "edit" });
 
-          console.log({ permit, permitAction, permitID, permits });
+          console.log('edit data', { permit, permitAction, permitID, permits });
 
         } else {
+          console.log('hit add')
 
           // send create request with permit data
           let res = await fetch("/api/permit", {
@@ -107,14 +124,11 @@ const Editor = () => {
 
           const newPermit = await res.json();
           console.log("Create successful", { newPermit });
-
-
-          console.log('hit add')
-
           // add to permits list
           setPermits({ permit: newPermit, type: "add" });
         }
 
+        // set saved true to disable save button
         setIsSaved(true)
 
         // clear permit content
@@ -124,12 +138,16 @@ const Editor = () => {
 
         // clear editor
         setEvent(permit.event);
-
         console.log('cleared event', event)
 
 
         // clear current permit state
         setCurrentPermit(permit)
+
+        // clear noteID & action
+        setPermitID(null)
+        setPermitAction("add")
+
       } catch (error){
         console.log(error)
       }
@@ -146,8 +164,8 @@ const Editor = () => {
   // this acts like a listener whenever the user clicks on edit permit
   // since the edit permit funtion, sets
   useEffect(() => {
-    if (currentPermit.event) {
-      setEvent(currentPermit.event);
+    if (currentPermit) {
+      setEvent(currentPermit);
       setPermitID(currentPermit.id)
       setPermitAction(currentPermit.action);
     }
