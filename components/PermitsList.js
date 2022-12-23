@@ -69,7 +69,6 @@ const PermitsList = ({ retrieved_permits, showEditor }) => {
                 <footer className="permit-footer">
                   <ul className="options">
                     <li className="option">
-                      {/* add user image to permit footer */}
                       <Image src={permit.user.image} alt={permit.user.name} width={32} height={32} className="rounded-full" />
                     </li>
                     <li onClick={() => editPermit(permit)} className="option">

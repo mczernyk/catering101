@@ -43,6 +43,8 @@ export const createPermit = async (event, session) => {
 // UPDATE
 export const updatePermit = async (id, updatedData, session) => {
   let userId = session?.user.id;
+
+  console.log('updated Data in API', updatedData)
   const updatedPermit = await prisma.permit.update({
     where: {
       id_userId: {
@@ -51,9 +53,22 @@ export const updatePermit = async (id, updatedData, session) => {
       },
     },
     data: {
-      ...updatedData,
+      name: updatedData.event.name,
+      eventTime: updatedData.event.eventTime,
+      location: updatedData.event.location,
+      liquor: updatedData.event.liquor,
+      venueName: updatedData.event.venueName,
+      email: updatedData.event.email,
+      phone: updatedData.event.phone,
+      contactName: updatedData.event.contactName,
+      contactSSN: updatedData.event.contactSSN,
+      contactDOB: updatedData.event.contactDOB,
+      companyType: updatedData.event.companyType,
+      address: updatedData.event.address,
     },
   });
+
+  console.log('updated API', updatedPermit)
   const permit = await getPermitByID(updatedPermit.id);
   return permit;
 };

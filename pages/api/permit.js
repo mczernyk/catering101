@@ -22,6 +22,7 @@ export default async function handle(req, res) {
     // const updatedData = {event}
     // Update current permit
     // also pass the session which would be use to get the user information
+
     const permit = await updatePermit(id, { event }, session);
     // return updated permit
     return res.json(permit);
