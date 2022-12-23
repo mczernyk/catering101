@@ -6,7 +6,7 @@ import RandomID from "../modules/RandomID";
 
 // making editor for new catering permit applications
 const Editor = () => {
-  // the current permit
+  // the current permit, imported from AppContext. used to edit or create new permit
   const currentPermit = usePermit();
   const setCurrentPermit = useDispatchPermit();
 
