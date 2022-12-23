@@ -221,7 +221,7 @@ const Editor = () => {
               event.venueName && event.email && event.phone
               ? "Complete" : "Incomplete"}</h1>
             <label>
-              Venue Name
+              Venue Owner
               <input
                 type="text"
                 name="venueName" required
