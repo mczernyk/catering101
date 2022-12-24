@@ -74,7 +74,6 @@ const PermitsList = ({ retrieved_permits, showEditor }) => {
                     <li onClick={() => editPermit(permit)} className="option">
                       <button className="cta cta-w-icon">
                         <PencilAltIcon className="icon" />
-                        <span className="">Edit</span>
                       </button>
                     </li>
                     <li className="option">
@@ -82,14 +81,12 @@ const PermitsList = ({ retrieved_permits, showEditor }) => {
 
                         <button className="cta cta-w-icon">
                           <ExternalLinkIcon className="icon" />
-                          <span className="">Open</span>
                        </button>
                       </Link>
                     </li>
                     <li className="option">
                       <button onClick={() => deletePermit(permit)} className="cta cta-w-icon">
-                        <TrashIcon className="icon" />
-                        <span className="">Delete</span>
+                        <TrashIcon className="icon-delete" />
                       </button>
                     </li>
 

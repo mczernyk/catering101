@@ -6,10 +6,6 @@
   @apply p-4;
 }
 
-.editor .form-input, .editor .form-textarea{
-  @apply w-full border-transparent;
-}
-
 .editor .form-input {
   @apply font-bold text-2xl ring-transparent;
   font-variation-settings: 'wdth' 130;
@@ -27,6 +23,22 @@
 .form {
   display: flex;
   flex-direction: column;
+}
+
+.form h1 {
+  text-align: center;
+}
+
+.form label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px
+}
+
+.form label input {
+  @apply input-bordered w-full max-w-xs rounded-lg
 }
 /* .options .option {
   @apply

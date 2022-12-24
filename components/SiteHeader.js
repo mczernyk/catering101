@@ -7,10 +7,13 @@ const SiteHeader = () => {
   return (
     <header className={"site-header"}>
       <div className="wrapper">
-        <figure className="logo">
-          <Link href={`/`} passHref={true}>📝 Permits</Link>
-        </figure>
         <AuthBtn />
+
+        <figure className="logo">
+          <h1>
+            <Link href={`/`} passHref={true}>My Permits 📝</Link>
+          </h1>
+        </figure>
       </div>
     </header>
   )

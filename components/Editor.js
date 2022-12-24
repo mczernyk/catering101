@@ -179,7 +179,11 @@ const Editor = () => {
           <form className="form">
             <h1>Event Details: {
               event.name && event.eventTime && event.location && event.liquor
-              ? "Complete" : "Incomplete"}
+              ?
+              <span style={{color:'#16A249'}}>Complete</span>
+              :
+              <span style={{color:'#DC2828'}}>Incomplete</span>
+            }
             </h1>
             <label>
               Event Name
@@ -219,7 +223,12 @@ const Editor = () => {
             </label>
             <h1>Venue Details: {
               event.venueName && event.email && event.phone
-              ? "Complete" : "Incomplete"}</h1>
+              ?
+              <span style={{color:'#16A249'}}>Complete</span>
+              :
+              <span style={{color:'#DC2828'}}>Incomplete</span>
+            }
+            </h1>
             <label>
               Venue Owner
               <input
@@ -249,7 +258,12 @@ const Editor = () => {
             </label>
             <h1>Business Details: {
               event.contactName && event.contactSSN && event.contactDOB && event.companyType && event.address
-              ? "Complete" : "Incomplete"}</h1>
+              ?
+              <span style={{color:'#16A249'}}>Complete</span>
+              :
+              <span style={{color:'#DC2828'}}>Incomplete</span>
+            }
+            </h1>
             <label>
               Contact Name
               <input

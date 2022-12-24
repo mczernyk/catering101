@@ -78,12 +78,11 @@ const Permit = ({ permit }) => {
               <p className="text-xl">Address: {permit.address}</p>
             </main>
             <footer className="permit-footer">
-              <ul className="options px-4">
-                <li className="option">
-                  {/* add user image to permit footer */}
-                  <Image src={permit.user.image} alt={permit.user.name} width={48} height={48} className="rounded-full" />
-                </li>
-              </ul>
+              <div className="option-footer">
+                {/* add user image to permit footer */}
+                <Image src={permit.user.image} alt={permit.user.name} width={48} height={48} className="rounded-full" />
+                <p>{permit.user.name}</p>
+              </div>
             </footer>
           </article>
         </main>

@@ -1,0 +1,11 @@
+.auth-btn {
+  @apply flex gap-2 items-center p-2 border border-gray-200 rounded-lg;
+}
+
+.auth-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  @apply flex gap-2 items-center;
+}

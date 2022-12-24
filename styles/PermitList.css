@@ -22,8 +22,12 @@
   @apply border-t border-gray-200 pt-4 mt-2;
 }
 
+.option-footer {
+  @apply  flex flex-col items-center justify-center
+}
+
 .options {
-  @apply  flex gap-2 flex-wrap;
+  @apply  flex gap-2 justify-evenly;
 }
 
 .fallback-message {

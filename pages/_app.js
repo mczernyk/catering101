@@ -6,6 +6,8 @@ import "../styles/globals.css";
 import "../styles/Editor.css";
 import '../styles/SiteHeader.css'
 import "../styles/PermitList.css"
+import "../styles/AuthBtn.css"
+
 
 // **<<SessionProvider />**](https://next-auth.js.org/getting-started/client#sessionprovider)
 
