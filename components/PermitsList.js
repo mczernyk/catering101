@@ -42,11 +42,9 @@ const PermitsList = ({ retrieved_permits, showEditor }) => {
 
       // OLD
       // confirmDelete ? setPermits({ permit, type: "remove" }) : null;
-
     } catch (error) {
       console.log(error);
     }
-
   };
 
   useEffect(()=> {
