@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 import { getSession } from "next-auth/react";
-// troubleshooting nextauth google login
-import {getServerSession} from "next-auth"
 const getAllPermitsByUserID = require("../prisma/Permit").getAllPermitsByUserID;
 
 import Head from "next/head";
@@ -14,22 +12,14 @@ import HomeStyles from "../styles/Home.module.css";
 
 
 export const getServerSideProps = async ({ req, res }) => {
-
-
-  // const session = await getSession({ req });
-  // Using below instead for nextauth bugs; remove session from props and below session def if no good
-  const session = await getServerSession({req})
-
+  const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
     return { props: { permits: [] } };
   }
   const permits = await getAllPermitsByUserID(session?.user?.id);
   return {
-    props: {
-      permits,
-      session
-    },
+    props: { permits },
   };
 };
 
