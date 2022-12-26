@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link"
+import { useSession } from "next-auth/react";
+
 
 
 
@@ -10,6 +12,9 @@ import { usePermit, useDispatchPermit, usePermits, useDispatchPermits } from "..
 
 
 const PermitsList = ({ retrieved_permits, showEditor }) => {
+
+  // useSession() returns an object containing two values: data and status
+  const { data: session, status } = useSession();
 
   const permits = usePermits();
   const setPermits = useDispatchPermits();
@@ -97,9 +102,16 @@ const PermitsList = ({ retrieved_permits, showEditor }) => {
           ))}
         </ul>
       ) : (
-        <div className="fallback-message">
-          <p>no permits yet</p>
-        </div>
+        status === "authenticated" ?
+        (
+          <div className="fallback-message">
+            <p>no permits yet</p>
+          </div>
+        ) : (
+          <div className="fallback-message">
+            <p>log in to see your catering permits</p>
+          </div>
+        )
       )}
     </div>
   );

@@ -149,8 +149,10 @@ const Editor = () => {
         setPermitAction("add")
 
       } catch (error){
-        console.log(error)
+        console.log('permit error', error)
+        alert('there was an error saving your permit', error)
       }
+      alert("Your permit has been saved")
     }
   }
 
@@ -292,7 +294,7 @@ const Editor = () => {
               </input>
             </label>
             <label>
-              Business Details
+              Company Type
               <input
                 type="text"
                 name="companyType" required
@@ -310,12 +312,14 @@ const Editor = () => {
               </input>
             </label>
 
-          </form>
 
+          </form>
         </div>
         <ul className={"options"}>
           <li className={"option"}>
-            <button onClick={savePermit} disabled={isSaved} className="cta flex gap-2 items-end">
+            <button type="submit" onClick={savePermit}
+            disabled={isSaved || !event.name || !event.eventTime || !event.location || !event.liquor || !event.venueName || !event.email || !event.phone || !event.contactName || !event.contactSSN || !event.contactDOB || !event.companyType || !event.address}
+            className="cta flex gap-2 items-end">
               <CheckCircleIcon className="h-5 w-5 text-blue-500" />
               <span className="">{isSaved ? "Saved" : "Save"}</span>
             </button>

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { getSession } from "next-auth/react";
 const getPermitByID = require("../../prisma/Permit").getPermitByID;
 import HomeStyles from "../../styles/Home.module.css";
+import Link from "next/link"
+
 
 
 export const getServerSideProps = async ({ req, res, params }) => {
@@ -22,7 +24,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
 const Permit = ({ permit }) => {
   if (permit == null) {
     return (
-      <>
+      <div>
         <Head>
           <title>Login to view permit</title>
           <meta name="description" content="Login to view this permit" />
@@ -35,14 +37,14 @@ const Permit = ({ permit }) => {
             </header>
           </main>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div>
       <Head>
-        <title>{permit.title}</title>
+        <title>{permit.name}</title>
         <meta name="description" content={`By ${permit.user.name}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -77,17 +79,28 @@ const Permit = ({ permit }) => {
               <p className="text-xl">Company Type: {permit.companyType}</p>
               <p className="text-xl">Address: {permit.address}</p>
             </main>
+            <header className="permit-header">
+              <h2 className="text-4xl">Permit Status</h2>
+            </header>
+            <main className=" px-4">
+              <p className="text-xl">Status: {permit.reviewed? 'approved' : 'under review'}</p>
+              <p className="text-xl">Submitted by: {permit.user.name}</p>
+
+            </main>
+
             <footer className="permit-footer">
               <div className="option-footer">
-                {/* add user image to permit footer */}
-                <Image src={permit.user.image} alt={permit.user.name} width={48} height={48} className="rounded-full" />
-                <p>{permit.user.name}</p>
+                <div className="auth-btn">
+                  <button>
+                    <Link href={`/`} passHref={true}>Home</Link>
+                  </button>
+                </div>
               </div>
             </footer>
           </article>
         </main>
       </div>
-    </>
+    </div>
   );
 };
 export default Permit;
