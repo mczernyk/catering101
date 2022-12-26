@@ -27,5 +27,8 @@
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
     "prisma": "^4.8.0"
+  },
+  "resolutions": {
+    "typeorm": "0.2.28"
   }
 }
