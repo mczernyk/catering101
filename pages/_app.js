@@ -10,6 +10,7 @@ import "../styles/AuthBtn.css"
 
 
 // **<<SessionProvider />**](https://next-auth.js.org/getting-started/client#sessionprovider)
+// shares session/keeps session synced across app components
 
 function MyApp({ Component, pageProps: {session, ...pageProps} }) {
   return (

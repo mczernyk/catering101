@@ -13,7 +13,7 @@ import { usePermit, useDispatchPermit, usePermits, useDispatchPermits } from "..
 
 const PermitsList = ({ retrieved_permits, showEditor }) => {
 
-  // useSession() returns an object containing two values: data and status
+  // useSession() returns an object containing two values: data and status. used to check auth user session
   const { data: session, status } = useSession();
 
   const permits = usePermits();

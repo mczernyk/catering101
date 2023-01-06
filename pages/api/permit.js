@@ -1,6 +1,9 @@
 import { createPermit, updatePermit, deletePermit } from "../../prisma/Permit";
 import { getSession } from "next-auth/react";
 
+// API routing for basic POST/PUT/DELETE prisma functions
+// import functions from /prisma/Permit & pass them data from user session
+
 export default async function handle(req, res) {
   // Get the current session data with {user, email, id}
   const session = await getSession({ req });
@@ -20,6 +23,7 @@ export default async function handle(req, res) {
     const { id, event } = req.body;
 
     // const updatedData = {event}
+
     // Update current permit
     // also pass the session which would be use to get the user information
 

@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+
+// prisma client for connecting to mongodb
+
 let prisma
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient()

@@ -5,8 +5,10 @@ const getPermitByID = require("../../prisma/Permit").getPermitByID;
 import HomeStyles from "../../styles/Home.module.css";
 import Link from "next/link"
 
+// display permit data at page corresponding to [ID]
 
 
+// get single permit data from server
 export const getServerSideProps = async ({ req, res, params }) => {
   const session = await getSession({ req });
   console.log({ params });

@@ -1,16 +1,17 @@
 import { useState } from "react";
-
 import { getSession } from "next-auth/react";
+
+// GET request - user permits from db
 const getAllPermitsByUserID = require("../prisma/Permit").getAllPermitsByUserID;
 
 import Head from "next/head";
-
 import PermitsList from "../components/PermitsList";
 import Editor from "../components/Editor"
 
+// css
 import HomeStyles from "../styles/Home.module.css";
 
-
+// retrieve all user permits from server
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {

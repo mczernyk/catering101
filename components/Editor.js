@@ -10,17 +10,24 @@ import RandomID from "../modules/RandomID";
 
 
 // making editor for new catering permit applications
+
 const Editor = () => {
 
   // useSession() returns an object containing two values: data and status
   const { data: session, status } = useSession();
 
-  // the current permit, imported from AppContext. used to edit or create new permit
+  // the current permit, imported from AppContext. used to get, edit or create new permit
+
+  // get
   const currentPermit = usePermit();
+  // set
   const setCurrentPermit = useDispatchPermit();
 
   // the array of saved permits
+
+  // get
   const permits = usePermits();
+  // set
   const setPermits = useDispatchPermits();
 
   // edit permit states
@@ -39,14 +46,16 @@ const Editor = () => {
     address: ''
   });
 
+  // permit ID
   const [permitID, setPermitID] = useState(null);
+  // add or edit; default to add
   const [permitAction, setPermitAction] = useState("add");
+  // saved status for button
   const [isSaved, setIsSaved] = useState(false);
-
    // user data
    const [userID, setUserID] = useState(null);
 
-  // functions to capture form data for each category; handles multiple fields for each
+  // functions to capture form data for each category; handles multiple fields
 
   const handleEventChange = (evt) => {
     // get input values
@@ -68,6 +77,7 @@ const Editor = () => {
 
       // check if permit already has an ID, if it does asign the current id to the permit object,
       // if not, assign a new random ID to the permit object
+
       // OLD - replaced when connecting to Mongo/Prisma
       // let id = permitID || RandomID(event.name.slice(0, 5), 5);
 
@@ -164,7 +174,7 @@ const Editor = () => {
 
   // update the editor content whenever the permit context changes
   // this acts like a listener whenever the user clicks on edit permit
-  // since the edit permit funtion, sets
+  // since the edit permit function, sets ID
   useEffect(() => {
     if (currentPermit) {
       setEvent(currentPermit);

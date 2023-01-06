@@ -3,6 +3,8 @@ import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../prisma/prisma";
 
+// google auth keys for Next Auth & session management
+
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [

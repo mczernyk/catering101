@@ -1,6 +1,8 @@
 import prisma from "./prisma";
 
-// READ
+// REST API CRUD methods
+
+// READ/GET single permit
 //get unique permit by id
 export const getPermitByID = async (id) => {
   const permit = await prisma.permit.findUnique({
@@ -14,7 +16,7 @@ export const getPermitByID = async (id) => {
   return permit;
 };
 
-// CREATE
+// CREATE/POST
 export const createPermit = async (event, session) => {
   const newPermit = await prisma.permit.create({
     data: {
@@ -40,7 +42,7 @@ export const createPermit = async (event, session) => {
   return permit;
 };
 
-// UPDATE
+// UPDATE/PUT
 export const updatePermit = async (id, updatedData, session) => {
   let userId = session?.user.id;
 
@@ -73,7 +75,9 @@ export const updatePermit = async (id, updatedData, session) => {
   return permit;
 };
 
-// GET
+// READ/GET all user permits
+//get all permits by user id
+
   export const getAllPermitsByUserID = async (id) => {
     const permits = await prisma.permit.findMany({
       where: {
@@ -86,7 +90,9 @@ export const updatePermit = async (id, updatedData, session) => {
     return permits;
   };
 
-  // DELETE
+// DELETE
+// delete single permit
+
 export const deletePermit = async (id, session) => {
   let userId = session?.user.id;
   const deletedPermit = await prisma.permit.delete({
